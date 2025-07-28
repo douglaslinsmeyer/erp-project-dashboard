@@ -113,7 +113,7 @@ function App() {
 
   if (loading) {
     return (
-      <div className="loading">
+      <div className="loading" data-theme={theme}>
         <div className="spinner"></div>
       </div>
     )
@@ -121,7 +121,7 @@ function App() {
 
   if (error) {
     return (
-      <div className="error">
+      <div className="error" data-theme={theme}>
         <div className="error-message">
           <h2 className="error-title">Error Loading Dashboard</h2>
           <p>{error}</p>
