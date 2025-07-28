@@ -1,0 +1,14 @@
+{
+  "mimeTypes": {
+    ".js": "application/javascript",
+    ".mjs": "application/javascript",
+    ".json": "application/json",
+    ".css": "text/css",
+    ".html": "text/html",
+    ".svg": "image/svg+xml"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/api/*"]
+  }
+}
