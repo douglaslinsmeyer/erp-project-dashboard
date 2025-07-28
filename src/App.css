@@ -24,22 +24,22 @@
 }
 
 :root[data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #e2e8f0;
+  --bg-primary: #e2e8f0;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #cbd5e1;
   --text-primary: #0f172a;
   --text-secondary: #1e293b;
   --text-muted: #475569;
-  --text-subdued: #94a3b8;
-  --border-default: #e2e8f0;
+  --text-subdued: #64748b;
+  --border-default: #cbd5e1;
   --status-on-track: #059669;
-  --status-on-track-bg: rgba(5, 150, 105, 0.1);
+  --status-on-track-bg: rgba(5, 150, 105, 0.15);
   --status-at-risk: #d97706;
-  --status-at-risk-bg: rgba(217, 119, 6, 0.1);
+  --status-at-risk-bg: rgba(217, 119, 6, 0.15);
   --status-delayed: #ea580c;
-  --status-delayed-bg: rgba(234, 88, 12, 0.1);
+  --status-delayed-bg: rgba(234, 88, 12, 0.15);
   --status-emergency: #dc2626;
-  --status-emergency-bg: rgba(220, 38, 38, 0.1);
+  --status-emergency-bg: rgba(220, 38, 38, 0.15);
 }
 
 body {
