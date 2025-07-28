@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import type { DepartmentData } from './types/index.js'
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbz3ots_V5MzRBmVZ5jaHBE9Y9WpSWVQqWyqR-Cdc5rmEhl-FquJfz5nG8Tr_EvWz8Aepw/exec'
+const API_URL = 'https://script.google.com/macros/s/AKfycbyoz8GvtO2FeXugPBY4PP7atw3IdBUJpeMSBzpTfuQlSm767JjFmP9lHhPcgzefIu1wnQ/exec'
 const REFRESH_INTERVAL = 30000 // 30 seconds
+const DASHBOARD_CYCLE_INTERVAL = 60000 // 1 minute
 
 function App() {
-  const [departments, setDepartments] = useState<DepartmentData[]>([])
+  const [departmentData, setDepartmentData] = useState<DepartmentData[]>([])
+  const [cellData, setCellData] = useState<DepartmentData[]>([])
+  const [currentDashboard, setCurrentDashboard] = useState<'department' | 'cell'>('department')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
@@ -15,7 +18,15 @@ function App() {
     try {
       const response = await fetch(API_URL)
       const result = await response.json()
-      setDepartments(result.data)
+      
+      // Set both datasets
+      if (result.DepartmentStatus) {
+        setDepartmentData(result.DepartmentStatus)
+      }
+      if (result.CellStatus) {
+        setCellData(result.CellStatus)
+      }
+      
       setLastUpdated(new Date())
       setError(null)
     } catch (err) {
@@ -30,6 +41,14 @@ function App() {
     fetchData()
     const interval = setInterval(fetchData, REFRESH_INTERVAL)
     return () => clearInterval(interval)
+  }, [])
+
+  // Dashboard cycling effect
+  useEffect(() => {
+    const cycleInterval = setInterval(() => {
+      setCurrentDashboard(prev => prev === 'department' ? 'cell' : 'department')
+    }, DASHBOARD_CYCLE_INTERVAL)
+    return () => clearInterval(cycleInterval)
   }, [])
 
   if (loading) {
@@ -51,15 +70,19 @@ function App() {
     )
   }
 
+  const currentData = currentDashboard === 'department' ? departmentData : cellData
+  const dashboardTitle = currentDashboard === 'department' ? 'Department Status' : 'Cell Status'
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
         <p className="last-update">Last updated: {lastUpdated.toLocaleTimeString()}</p>
+        <span className="dashboard-indicator">{dashboardTitle}</span>
       </header>
 
       <div className="departments-container">
         <div className="departments-cards">
-          {departments.map((dept, index) => {
+          {currentData.map((dept, index) => {
             const lastUpdateTime = new Date(dept.LastUpdate).getTime()
             const currentTime = new Date().getTime()
             const minutesSinceUpdate = (currentTime - lastUpdateTime) / (1000 * 60)
