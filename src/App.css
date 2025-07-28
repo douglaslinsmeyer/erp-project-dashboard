@@ -192,12 +192,7 @@ body {
   transition: all 0.2s;
   display: flex;
   flex-direction: column;
-  height: 200px;
   position: relative;
-}
-
-.compact-view .department-card {
-  height: 185px;
 }
 
 .card-on-track {

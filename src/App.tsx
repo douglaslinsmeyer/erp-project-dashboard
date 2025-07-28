@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import type { DepartmentData } from './types/index.js'
 
@@ -17,6 +17,8 @@ function App() {
     const saved = localStorage.getItem('dashboard-theme')
     return (saved as 'dark' | 'light') || 'dark'
   })
+  const [cardHeight, setCardHeight] = useState(200)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const fetchData = async () => {
     try {
@@ -67,6 +69,48 @@ function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark')
   }
 
+  // Calculate optimal card height based on viewport
+  const calculateCardHeight = () => {
+    if (!containerRef.current) return
+
+    const currentData = currentDashboard === 'department' ? departmentData : cellData
+    const itemCount = currentData.length
+
+    // Get container dimensions
+    const containerHeight = containerRef.current.offsetHeight
+    const containerWidth = containerRef.current.offsetWidth
+    
+    // Calculate grid columns based on width
+    let columns = 5 // default for HD
+    if (containerWidth < 768) columns = 2
+    else if (containerWidth < 1920) columns = 5
+    else if (containerWidth >= 3840) columns = 7
+    
+    // Calculate rows needed
+    const rows = Math.ceil(itemCount / columns)
+    
+    // Calculate available height per row (subtract gaps and padding)
+    const gap = 16 // 1rem gap
+    const headerHeight = 60 // approximate header height
+    const availableHeight = window.innerHeight - headerHeight - 32 // 32px for dashboard padding
+    const cardHeightWithGap = (availableHeight - (gap * (rows - 1))) / rows
+    
+    // Set minimum and maximum heights
+    const minHeight = 140
+    const maxHeight = 250
+    const optimalHeight = Math.max(minHeight, Math.min(maxHeight, cardHeightWithGap - gap))
+    
+    setCardHeight(Math.floor(optimalHeight))
+  }
+
+  // Recalculate on data change, dashboard change, or window resize
+  useEffect(() => {
+    calculateCardHeight()
+    const handleResize = () => calculateCardHeight()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [departmentData, cellData, currentDashboard])
+
   if (loading) {
     return (
       <div className="loading">
@@ -105,8 +149,8 @@ function App() {
         <p className="last-update">Last updated: {lastUpdated.toLocaleTimeString()}</p>
       </header>
 
-      <div className="departments-container">
-        <div className={`departments-cards ${currentDashboard === 'department' ? 'compact-view' : ''}`}>
+      <div className="departments-container" ref={containerRef}>
+        <div className="departments-cards">
           {currentData.map((dept, index) => {
             const lastUpdateTime = new Date(dept.LastUpdate).getTime()
             const currentTime = new Date().getTime()
@@ -122,12 +166,16 @@ function App() {
             }
             
             return (
-              <div key={index} className={`department-card ${
-                dept.Status === 'On Track' ? 'card-on-track' : 
-                dept.Status === 'At Risk' ? 'card-at-risk' : 
-                dept.Status === 'Delayed' ? 'card-delayed' :
-                'card-emergency'
-              }`}>
+              <div 
+                key={index} 
+                className={`department-card ${
+                  dept.Status === 'On Track' ? 'card-on-track' : 
+                  dept.Status === 'At Risk' ? 'card-at-risk' : 
+                  dept.Status === 'Delayed' ? 'card-delayed' :
+                  'card-emergency'
+                }`}
+                style={{ height: `${cardHeight}px` }}
+              >
                 <div className="card-header">
                   <h3 className="department-name">{dept.Name}</h3>
                   <div className="badges">
