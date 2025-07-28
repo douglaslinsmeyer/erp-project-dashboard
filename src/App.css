@@ -196,6 +196,10 @@ body {
   position: relative;
 }
 
+.compact-view .department-card {
+  height: 185px;
+}
+
 .card-on-track {
   border-color: var(--bg-secondary);
 }
