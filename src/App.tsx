@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import { DepartmentData } from './types/index'
+import type { DepartmentData } from './types/index.js'
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbz3ots_V5MzRBmVZ5jaHBE9Y9WpSWVQqWyqR-Cdc5rmEhl-FquJfz5nG8Tr_EvWz8Aepw/exec'
 const REFRESH_INTERVAL = 30000 // 30 seconds
