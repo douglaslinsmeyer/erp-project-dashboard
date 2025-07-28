@@ -51,39 +51,11 @@ function App() {
     )
   }
 
-  const statusCounts = departments.reduce((acc, dept) => {
-    acc[dept.Status] = (acc[dept.Status] || 0) + 1
-    return acc
-  }, {} as Record<string, number>)
-
-  const totalDepartments = departments.length
-  const onTrackPercentage = Math.round((statusCounts['On Track'] || 0) / totalDepartments * 100)
-
   return (
     <div className="dashboard">
       <header className="dashboard-header">
         <p className="last-update">Last updated: {lastUpdated.toLocaleTimeString()}</p>
       </header>
-
-      <div className="stats-grid">
-        <div className="stat-card">
-          <p className="stat-label">Total Departments</p>
-          <p className="stat-value">{totalDepartments}</p>
-        </div>
-        <div className="stat-card">
-          <p className="stat-label">On Track</p>
-          <p className="stat-value status-on-track">{statusCounts['On Track'] || 0}</p>
-          <p className="stat-percentage">{onTrackPercentage}%</p>
-        </div>
-        <div className="stat-card">
-          <p className="stat-label">At Risk</p>
-          <p className="stat-value status-at-risk">{statusCounts['At Risk'] || 0}</p>
-        </div>
-        <div className="stat-card">
-          <p className="stat-label">Delayed</p>
-          <p className="stat-value status-delayed">{statusCounts['Delayed'] || 0}</p>
-        </div>
-      </div>
 
       <div className="departments-container">
         <h2 className="grid-header">Department Status</h2>
@@ -94,6 +66,14 @@ function App() {
             const minutesSinceUpdate = (currentTime - lastUpdateTime) / (1000 * 60)
             const isOverdue = minutesSinceUpdate > 30
             
+            const formatTimeAgo = (minutes: number) => {
+              if (minutes < 1) return 'just now'
+              if (minutes < 60) return `${Math.floor(minutes)} mins ago`
+              const hours = Math.floor(minutes / 60)
+              if (hours === 1) return '1 hour ago'
+              return `${hours} hours ago`
+            }
+            
             return (
               <div key={index} className={`department-card ${
                 dept.Status === 'On Track' ? 'card-on-track' : 
@@ -102,18 +82,21 @@ function App() {
               }`}>
                 <div className="card-header">
                   <h3 className="department-name">{dept.Name}</h3>
-                  {isOverdue && <span className="overdue-badge">Overdue</span>}
+                  <div className="badges">
+                    <span className={`status-badge ${
+                      dept.Status === 'On Track' ? 'badge-on-track' : 
+                      dept.Status === 'At Risk' ? 'badge-at-risk' : 
+                      'badge-delayed'
+                    }`}>
+                      {dept.Status}
+                    </span>
+                    {isOverdue && <span className="overdue-badge">Overdue</span>}
+                  </div>
                 </div>
-                <div className="card-status">
-                  <span className={`status-badge ${
-                    dept.Status === 'On Track' ? 'badge-on-track' : 
-                    dept.Status === 'At Risk' ? 'badge-at-risk' : 
-                    'badge-delayed'
-                  }`}>
-                    {dept.Status}
-                  </span>
+                <div className="card-content">
+                  <p className="card-note">{dept.UpdateNote}</p>
+                  <p className="update-time">Updated {formatTimeAgo(minutesSinceUpdate)}</p>
                 </div>
-                <p className="card-note">{dept.UpdateNote}</p>
               </div>
             )
           })}
