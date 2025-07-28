@@ -77,7 +77,8 @@ function App() {
               <div key={index} className={`department-card ${
                 dept.Status === 'On Track' ? 'card-on-track' : 
                 dept.Status === 'At Risk' ? 'card-at-risk' : 
-                'card-delayed'
+                dept.Status === 'Delayed' ? 'card-delayed' :
+                'card-emergency'
               }`}>
                 <div className="card-header">
                   <h3 className="department-name">{dept.Name}</h3>
@@ -85,7 +86,8 @@ function App() {
                     <span className={`status-badge ${
                       dept.Status === 'On Track' ? 'badge-on-track' : 
                       dept.Status === 'At Risk' ? 'badge-at-risk' : 
-                      'badge-delayed'
+                      dept.Status === 'Delayed' ? 'badge-delayed' :
+                      'badge-emergency'
                     }`}>
                       {dept.Status}
                     </span>

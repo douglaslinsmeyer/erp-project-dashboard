@@ -1,6 +1,6 @@
 export interface DepartmentData {
   Name: string;
-  Status: 'On Track' | 'At Risk' | 'Delayed';
+  Status: 'On Track' | 'At Risk' | 'Delayed' | 'Emergency';
   LastUpdate: string;
   UpdateNote: string;
 }
