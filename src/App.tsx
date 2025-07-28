@@ -78,12 +78,12 @@ function App() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
+        <h1 className="dashboard-title">{dashboardTitle}</h1>
         <p className="last-update">Last updated: {lastUpdated.toLocaleTimeString()}</p>
-        <span className="dashboard-indicator">{dashboardTitle}</span>
       </header>
 
       <div className="departments-container">
-        <div className="departments-cards">
+        <div className={`departments-cards ${currentDashboard === 'department' ? 'compact-view' : ''}`}>
           {currentData.map((dept, index) => {
             const lastUpdateTime = new Date(dept.LastUpdate).getTime()
             const currentTime = new Date().getTime()
