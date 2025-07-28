@@ -54,14 +54,6 @@ body {
   overflow: hidden;
 }
 
-.grid-header {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: #f1f5f9;
-  flex-shrink: 0;
-}
-
 .departments-cards {
   flex: 1;
   display: grid;

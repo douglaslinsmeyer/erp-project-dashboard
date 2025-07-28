@@ -58,7 +58,6 @@ function App() {
       </header>
 
       <div className="departments-container">
-        <h2 className="grid-header">Department Status</h2>
         <div className="departments-cards">
           {departments.map((dept, index) => {
             const lastUpdateTime = new Date(dept.LastUpdate).getTime()
