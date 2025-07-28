@@ -85,37 +85,38 @@ function App() {
         </div>
       </div>
 
-      <div className="departments-grid">
+      <div className="departments-container">
         <h2 className="grid-header">Department Status</h2>
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Department</th>
-                <th>Status</th>
-                <th>Last Update</th>
-                <th>Update Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              {departments.map((dept, index) => (
-                <tr key={index}>
-                  <td>{dept.Name}</td>
-                  <td>
-                    <span className={`status-badge ${
-                      dept.Status === 'On Track' ? 'badge-on-track' : 
-                      dept.Status === 'At Risk' ? 'badge-at-risk' : 
-                      'badge-delayed'
-                    }`}>
-                      {dept.Status}
-                    </span>
-                  </td>
-                  <td>{new Date(dept.LastUpdate).toLocaleDateString()}</td>
-                  <td className="update-note">{dept.UpdateNote}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="departments-cards">
+          {departments.map((dept, index) => {
+            const lastUpdateTime = new Date(dept.LastUpdate).getTime()
+            const currentTime = new Date().getTime()
+            const minutesSinceUpdate = (currentTime - lastUpdateTime) / (1000 * 60)
+            const isOverdue = minutesSinceUpdate > 30
+            
+            return (
+              <div key={index} className={`department-card ${
+                dept.Status === 'On Track' ? 'card-on-track' : 
+                dept.Status === 'At Risk' ? 'card-at-risk' : 
+                'card-delayed'
+              }`}>
+                <div className="card-header">
+                  <h3 className="department-name">{dept.Name}</h3>
+                  {isOverdue && <span className="overdue-badge">Overdue</span>}
+                </div>
+                <div className="card-status">
+                  <span className={`status-badge ${
+                    dept.Status === 'On Track' ? 'badge-on-track' : 
+                    dept.Status === 'At Risk' ? 'badge-at-risk' : 
+                    'badge-delayed'
+                  }`}>
+                    {dept.Status}
+                  </span>
+                </div>
+                <p className="card-note">{dept.UpdateNote}</p>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>
