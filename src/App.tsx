@@ -91,8 +91,7 @@ function App() {
     
     // Calculate available height per row (subtract gaps and padding)
     const gap = 16 // 1rem gap
-    const headerHeight = 60 // approximate header height
-    const availableHeight = window.innerHeight - headerHeight - 32 // 32px for dashboard padding
+    const availableHeight = containerHeight // Use actual container height
     const cardHeightWithGap = (availableHeight - (gap * (rows - 1))) / rows
     
     // Set minimum and maximum heights
