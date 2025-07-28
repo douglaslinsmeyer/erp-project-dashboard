@@ -19,12 +19,14 @@ function App() {
       const response = await fetch(API_URL)
       const result = await response.json()
       
-      // Set both datasets
-      if (result.DepartmentStatus) {
-        setDepartmentData(result.DepartmentStatus)
-      }
-      if (result.CellStatus) {
-        setCellData(result.CellStatus)
+      // Handle new data structure with sheets object
+      if (result.success && result.sheets) {
+        if (result.sheets.DepartmentStatus) {
+          setDepartmentData(result.sheets.DepartmentStatus)
+        }
+        if (result.sheets.CellStatus) {
+          setCellData(result.sheets.CellStatus)
+        }
       }
       
       setLastUpdated(new Date())
