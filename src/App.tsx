@@ -88,34 +88,36 @@ function App() {
 
       <div className="departments-grid">
         <h2 className="grid-header">Department Status</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Department</th>
-              <th>Status</th>
-              <th>Last Update</th>
-              <th>Update Note</th>
-            </tr>
-          </thead>
-          <tbody>
-            {departments.map((dept, index) => (
-              <tr key={index}>
-                <td>{dept.Name}</td>
-                <td>
-                  <span className={`status-badge ${
-                    dept.Status === 'On Track' ? 'badge-on-track' : 
-                    dept.Status === 'At Risk' ? 'badge-at-risk' : 
-                    'badge-delayed'
-                  }`}>
-                    {dept.Status}
-                  </span>
-                </td>
-                <td>{new Date(dept.LastUpdate).toLocaleDateString()}</td>
-                <td className="update-note">{dept.UpdateNote}</td>
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Last Update</th>
+                <th>Update Note</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {departments.map((dept, index) => (
+                <tr key={index}>
+                  <td>{dept.Name}</td>
+                  <td>
+                    <span className={`status-badge ${
+                      dept.Status === 'On Track' ? 'badge-on-track' : 
+                      dept.Status === 'At Risk' ? 'badge-at-risk' : 
+                      'badge-delayed'
+                    }`}>
+                      {dept.Status}
+                    </span>
+                  </td>
+                  <td>{new Date(dept.LastUpdate).toLocaleDateString()}</td>
+                  <td className="update-note">{dept.UpdateNote}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
