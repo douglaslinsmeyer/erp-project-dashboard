@@ -13,6 +13,10 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('dashboard-theme')
+    return (saved as 'dark' | 'light') || 'dark'
+  })
 
   const fetchData = async () => {
     try {
@@ -53,6 +57,16 @@ function App() {
     return () => clearInterval(cycleInterval)
   }, [])
 
+  // Theme effect
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('dashboard-theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark')
+  }
+
   if (loading) {
     return (
       <div className="loading">
@@ -78,6 +92,15 @@ function App() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
+        <label className="theme-toggle" aria-label="Toggle theme">
+          <input 
+            type="checkbox" 
+            checked={theme === 'light'} 
+            onChange={toggleTheme}
+            className="theme-toggle-input"
+          />
+          <span className="theme-toggle-slider"></span>
+        </label>
         <h1 className="dashboard-title">{dashboardTitle}</h1>
         <p className="last-update">Last updated: {lastUpdated.toLocaleTimeString()}</p>
       </header>
