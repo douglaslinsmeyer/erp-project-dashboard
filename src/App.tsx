@@ -62,7 +62,6 @@ function App() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1 className="dashboard-title">ERP Project Dashboard</h1>
         <p className="last-update">Last updated: {lastUpdated.toLocaleTimeString()}</p>
       </header>
 

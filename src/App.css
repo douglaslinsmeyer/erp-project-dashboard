@@ -38,23 +38,8 @@ body {
 
 .dashboard-header {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   flex-shrink: 0;
-}
-
-.dashboard-title {
-  font-size: 2rem;
-  font-weight: 700;
-  background: linear-gradient(to right, #60a5fa, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.25rem;
-}
-
-@media (min-width: 3840px) {
-  .dashboard-title {
-    font-size: 3rem;
-  }
 }
 
 .last-update {
@@ -164,6 +149,11 @@ th {
   z-index: 10;
 }
 
+th:nth-child(1) { width: 20%; }
+th:nth-child(2) { width: 15%; }
+th:nth-child(3) { width: 15%; }
+th:nth-child(4) { width: 50%; }
+
 td {
   padding: 0.4rem 0.75rem;
   border-bottom: 1px solid #334155;
@@ -198,12 +188,10 @@ tr:hover {
 }
 
 .update-note {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: #94a3b8;
-  max-width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  max-width: 500px;
+  line-height: 1.2;
 }
 
 .loading {
