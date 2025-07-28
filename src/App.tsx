@@ -83,7 +83,7 @@ function App() {
       </header>
 
       <div className="departments-container">
-        <div className={`departments-cards ${currentDashboard === 'department' ? 'compact-view' : ''}`}>
+        <div className="departments-cards">
           {currentData.map((dept, index) => {
             const lastUpdateTime = new Date(dept.LastUpdate).getTime()
             const currentTime = new Date().getTime()
