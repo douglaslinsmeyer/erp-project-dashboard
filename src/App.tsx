@@ -154,7 +154,7 @@ function App() {
             const lastUpdateTime = new Date(dept.LastUpdate).getTime()
             const currentTime = new Date().getTime()
             const minutesSinceUpdate = (currentTime - lastUpdateTime) / (1000 * 60)
-            const isOverdue = minutesSinceUpdate > 30
+            const isOverdue = minutesSinceUpdate > 60
             
             const formatTimeAgo = (minutes: number) => {
               if (minutes < 1) return 'just now'
