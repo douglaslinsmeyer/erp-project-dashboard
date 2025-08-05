@@ -1,14 +1,25 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import type { DepartmentData } from './types/index.js'
+import { api } from './services/api'
+import { signalRService } from './services/signalr'
+import type { StatusUpdateMessage } from './services/signalr'
+import { StatusCard } from './components/StatusCard'
+import { UpdateModal } from './components/UpdateModal'
+import { HistoryView } from './components/HistoryView'
+import { AddModal } from './components/AddModal'
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbyoz8GvtO2FeXugPBY4PP7atw3IdBUJpeMSBzpTfuQlSm767JjFmP9lHhPcgzefIu1wnQ/exec'
 const REFRESH_INTERVAL = 30000 // 30 seconds
 const DASHBOARD_CYCLE_INTERVAL = 60000 // 1 minute
 
+interface ExtendedDepartmentData extends DepartmentData {
+  type: 'department' | 'cell';
+  id: string;
+}
+
 function App() {
-  const [departmentData, setDepartmentData] = useState<DepartmentData[]>([])
-  const [cellData, setCellData] = useState<DepartmentData[]>([])
+  const [departmentData, setDepartmentData] = useState<ExtendedDepartmentData[]>([])
+  const [cellData, setCellData] = useState<ExtendedDepartmentData[]>([])
   const [currentDashboard, setCurrentDashboard] = useState<'department' | 'cell'>('department')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -18,20 +29,33 @@ function App() {
     return (saved as 'dark' | 'light') || 'dark'
   })
   const [cardHeight, setCardHeight] = useState(200)
+  const [selectedEntity, setSelectedEntity] = useState<ExtendedDepartmentData | null>(null)
+  const [showHistory, setShowHistory] = useState(false)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [isRotationPaused, setIsRotationPaused] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  const transformData = (data: any[], type: 'department' | 'cell'): ExtendedDepartmentData[] => {
+    return data.map(item => ({
+      Name: item.name || item.Name,
+      Status: item.status || item.Status,
+      LastUpdate: item.lastUpdate || item.LastUpdate,
+      UpdateNote: item.updateNote || item.UpdateNote,
+      type,
+      id: item.id || (item.name || item.Name || '').toLowerCase().replace(/[^a-z0-9]/g, '_')
+    }))
+  }
 
   const fetchData = async () => {
     try {
-      const response = await fetch(API_URL)
-      const result = await response.json()
+      const result = await api.getStatus()
       
-      // Handle new data structure with sheets object
       if (result.success && result.sheets) {
         if (result.sheets.DepartmentStatus) {
-          setDepartmentData(result.sheets.DepartmentStatus)
+          setDepartmentData(transformData(result.sheets.DepartmentStatus, 'department'))
         }
         if (result.sheets.CellStatus) {
-          setCellData(result.sheets.CellStatus)
+          setCellData(transformData(result.sheets.CellStatus, 'cell'))
         }
       }
       
@@ -45,19 +69,60 @@ function App() {
     }
   }
 
+  // Handle SignalR updates
+  const handleStatusUpdate = (update: StatusUpdateMessage) => {
+    console.log('Received real-time update:', update)
+    
+    // Update the appropriate dataset
+    if (update.entityType === 'department') {
+      setDepartmentData(prev => prev.map(dept => 
+        dept.id === update.entityId 
+          ? { 
+              ...dept, 
+              Status: update.status as DepartmentData['Status'], 
+              UpdateNote: update.updateNote,
+              LastUpdate: update.timestamp 
+            }
+          : dept
+      ))
+    } else if (update.entityType === 'cell') {
+      setCellData(prev => prev.map(cell => 
+        cell.id === update.entityId 
+          ? { 
+              ...cell, 
+              Status: update.status as DepartmentData['Status'], 
+              UpdateNote: update.updateNote,
+              LastUpdate: update.timestamp 
+            }
+          : cell
+      ))
+    }
+    
+    setLastUpdated(new Date(update.timestamp))
+  }
+
   useEffect(() => {
     fetchData()
     const interval = setInterval(fetchData, REFRESH_INTERVAL)
-    return () => clearInterval(interval)
+    
+    // Connect to SignalR - disabled temporarily
+    // signalRService.connect(handleStatusUpdate).catch(console.error)
+    
+    return () => {
+      clearInterval(interval)
+      signalRService.disconnect()
+    }
   }, [])
 
   // Dashboard cycling effect
   useEffect(() => {
-    const cycleInterval = setInterval(() => {
-      setCurrentDashboard(prev => prev === 'department' ? 'cell' : 'department')
-    }, DASHBOARD_CYCLE_INTERVAL)
-    return () => clearInterval(cycleInterval)
-  }, [])
+    if (!isRotationPaused) {
+      const cycleInterval = setInterval(() => {
+        setCurrentDashboard(prev => prev === 'department' ? 'cell' : 'department')
+      }, DASHBOARD_CYCLE_INTERVAL)
+      return () => clearInterval(cycleInterval)
+    }
+  }, [isRotationPaused])
 
   // Theme effect
   useEffect(() => {
@@ -110,6 +175,27 @@ function App() {
     return () => window.removeEventListener('resize', handleResize)
   }, [departmentData, cellData, currentDashboard])
 
+  const handleCardClick = (entity: ExtendedDepartmentData) => {
+    setSelectedEntity(entity)
+  }
+
+  const handleModalClose = () => {
+    setSelectedEntity(null)
+    setShowHistory(false)
+  }
+
+  const handleUpdate = () => {
+    fetchData() // Refresh data after update
+  }
+
+  const handleShowHistory = () => {
+    setShowHistory(true)
+  }
+
+  const handleHistoryClose = () => {
+    setShowHistory(false)
+  }
+
   if (loading) {
     return (
       <div className="loading" data-theme={theme}>
@@ -145,59 +231,66 @@ function App() {
           <span className="theme-toggle-slider"></span>
         </label>
         <h1 className="dashboard-title">{dashboardTitle}</h1>
-        <p className="last-update">Last updated: {lastUpdated.toLocaleTimeString()}</p>
+        <div className="header-actions">
+          <button
+            className="rotation-toggle"
+            onClick={() => setIsRotationPaused(!isRotationPaused)}
+            title={isRotationPaused ? 'Resume rotation' : 'Pause rotation'}
+            aria-label={isRotationPaused ? 'Resume rotation' : 'Pause rotation'}
+          >
+            {isRotationPaused ? '▶' : '❚❚'}
+          </button>
+          <button 
+            className="add-button"
+            onClick={() => setShowAddModal(true)}
+          >
+            + Add {currentDashboard === 'department' ? 'Department' : 'Cell'}
+          </button>
+          <p className="last-update">Last updated: {lastUpdated.toLocaleTimeString()}</p>
+        </div>
       </header>
 
       <div className="departments-container" ref={containerRef}>
         <div className="departments-cards">
-          {currentData.map((dept, index) => {
-            const lastUpdateTime = new Date(dept.LastUpdate).getTime()
-            const currentTime = new Date().getTime()
-            const minutesSinceUpdate = (currentTime - lastUpdateTime) / (1000 * 60)
-            const isOverdue = minutesSinceUpdate > 60
-            
-            const formatTimeAgo = (minutes: number) => {
-              if (minutes < 1) return 'just now'
-              if (minutes < 60) return `${Math.floor(minutes)} mins ago`
-              const hours = Math.floor(minutes / 60)
-              if (hours === 1) return '1 hour ago'
-              return `${hours} hours ago`
-            }
-            
-            return (
-              <div 
-                key={index} 
-                className={`department-card ${
-                  dept.Status === 'On Track' ? 'card-on-track' : 
-                  dept.Status === 'At Risk' ? 'card-at-risk' : 
-                  dept.Status === 'Delayed' ? 'card-delayed' :
-                  'card-emergency'
-                }`}
-                style={{ height: `${cardHeight}px` }}
-              >
-                <div className="card-header">
-                  <h3 className="department-name">{dept.Name}</h3>
-                  <div className="badges">
-                    <span className={`status-badge ${
-                      dept.Status === 'On Track' ? 'badge-on-track' : 
-                      dept.Status === 'At Risk' ? 'badge-at-risk' : 
-                      dept.Status === 'Delayed' ? 'badge-delayed' :
-                      'badge-emergency'
-                    }`}>
-                      {dept.Status}
-                    </span>
-                    {isOverdue && <span className="overdue-badge">Overdue</span>}
-                  </div>
-                </div>
-                <div className="card-content">
-                  <p className="card-note">{dept.UpdateNote}</p>
-                  <p className="update-time">Updated {formatTimeAgo(minutesSinceUpdate)}</p>
-                </div>
-              </div>
-            )
-          })}
+          {currentData.map((entity) => (
+            <StatusCard
+              key={entity.id}
+              data={entity}
+              onClick={() => handleCardClick(entity)}
+              cardHeight={cardHeight}
+            />
+          ))}
         </div>
       </div>
+
+      {selectedEntity && !showHistory && (
+        <UpdateModal
+          isOpen={true}
+          onClose={handleModalClose}
+          entity={selectedEntity}
+          onUpdate={handleUpdate}
+          onShowHistory={handleShowHistory}
+          onDelete={fetchData}
+        />
+      )}
+
+      {selectedEntity && showHistory && (
+        <HistoryView
+          isOpen={true}
+          onClose={handleHistoryClose}
+          entityId={selectedEntity.id}
+          entityName={selectedEntity.Name}
+        />
+      )}
+
+      {showAddModal && (
+        <AddModal
+          isOpen={true}
+          onClose={() => setShowAddModal(false)}
+          entityType={currentDashboard}
+          onAdd={fetchData}
+        />
+      )}
     </div>
   )
 }
