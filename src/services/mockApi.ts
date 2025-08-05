@@ -1,4 +1,3 @@
-import type { DepartmentData } from '../types';
 import type { StatusResponse, UpdateStatusRequest, HistoryEntry, CreateEntityRequest, DeleteEntityRequest } from './api';
 
 // In-memory storage for mock data
@@ -97,8 +96,8 @@ export const mockApi = {
     return {
       success: true,
       sheets: {
-        DepartmentStatus: mockData.departments,
-        CellStatus: mockData.cells
+        DepartmentStatus: mockData.departments as any[],
+        CellStatus: mockData.cells as any[]
       }
     };
   },

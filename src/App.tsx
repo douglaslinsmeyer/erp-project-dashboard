@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
-import type { DepartmentData } from './types/index.js'
+import type { DepartmentData } from './types'
 import { api } from './services/api'
 import { signalRService } from './services/signalr'
-import type { StatusUpdateMessage } from './services/signalr'
+// import type { StatusUpdateMessage } from './services/signalr'
 import { StatusCard } from './components/StatusCard'
 import { UpdateModal } from './components/UpdateModal'
 import { HistoryView } from './components/HistoryView'
@@ -69,37 +69,37 @@ function App() {
     }
   }
 
-  // Handle SignalR updates
-  const handleStatusUpdate = (update: StatusUpdateMessage) => {
-    console.log('Received real-time update:', update)
-    
-    // Update the appropriate dataset
-    if (update.entityType === 'department') {
-      setDepartmentData(prev => prev.map(dept => 
-        dept.id === update.entityId 
-          ? { 
-              ...dept, 
-              Status: update.status as DepartmentData['Status'], 
-              UpdateNote: update.updateNote,
-              LastUpdate: update.timestamp 
-            }
-          : dept
-      ))
-    } else if (update.entityType === 'cell') {
-      setCellData(prev => prev.map(cell => 
-        cell.id === update.entityId 
-          ? { 
-              ...cell, 
-              Status: update.status as DepartmentData['Status'], 
-              UpdateNote: update.updateNote,
-              LastUpdate: update.timestamp 
-            }
-          : cell
-      ))
-    }
-    
-    setLastUpdated(new Date(update.timestamp))
-  }
+  // Handle SignalR updates (commented out for now)
+  // const handleStatusUpdate = (update: StatusUpdateMessage) => {
+  //   console.log('Received real-time update:', update)
+  //   
+  //   // Update the appropriate dataset
+  //   if (update.entityType === 'department') {
+  //     setDepartmentData(prev => prev.map(dept => 
+  //       dept.id === update.entityId 
+  //         ? { 
+  //             ...dept, 
+  //             Status: update.status as DepartmentData['Status'], 
+  //             UpdateNote: update.updateNote,
+  //             LastUpdate: update.timestamp 
+  //           }
+  //         : dept
+  //     ))
+  //   } else if (update.entityType === 'cell') {
+  //     setCellData(prev => prev.map(cell => 
+  //       cell.id === update.entityId 
+  //         ? { 
+  //             ...cell, 
+  //             Status: update.status as DepartmentData['Status'], 
+  //             UpdateNote: update.updateNote,
+  //             LastUpdate: update.timestamp 
+  //           }
+  //         : cell
+  //     ))
+  //   }
+  //   
+  //   setLastUpdated(new Date(update.timestamp))
+  // }
 
   useEffect(() => {
     fetchData()
