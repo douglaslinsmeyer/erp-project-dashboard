@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureStorageConnectionString": "",
+    "AzureSignalRConnectionString": ""
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "http://localhost:5173",
+    "CORSCredentials": true
+  }
+}
