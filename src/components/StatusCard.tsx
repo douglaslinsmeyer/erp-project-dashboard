@@ -37,18 +37,18 @@ export const StatusCard: React.FC<StatusCardProps> = ({ data, onClick, cardHeigh
       style={{ height: `${cardHeight}px` }}
       onClick={onClick}
     >
+      <div className="status-badge">{data.Status}</div>
       <div className="card-header">
         <h3>{data.Name}</h3>
-        <span className={`time-since ${isOverdue() ? 'overdue' : ''}`}>
-          {getTimeSince(data.LastUpdate)}
-        </span>
       </div>
       <div className="card-body">
-        <div className="status-badge">{data.Status}</div>
         {data.UpdateNote && (
           <p className="update-note">{data.UpdateNote}</p>
         )}
       </div>
+      <span className={`time-since ${isOverdue() ? 'overdue' : ''}`}>
+        {getTimeSince(data.LastUpdate)}
+      </span>
     </div>
   );
 };

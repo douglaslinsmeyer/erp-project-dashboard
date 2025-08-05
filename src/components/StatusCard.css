@@ -69,9 +69,6 @@
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   margin-bottom: 1rem;
 }
 
@@ -80,19 +77,28 @@
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-color);
-  flex: 1;
-  margin-right: 0.5rem;
+  padding-right: 5rem; /* Space for status badge */
 }
 
 .time-since {
-  font-size: 0.75rem;
+  position: absolute;
+  bottom: 0.75rem;
+  right: 1rem;
+  font-size: 0.7rem;
   color: var(--text-color-muted);
   white-space: nowrap;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.status-card:hover .time-since {
+  opacity: 0.8;
 }
 
 .time-since.overdue {
   color: var(--status-delayed);
   font-weight: 600;
+  opacity: 0.8;
 }
 
 .card-body {
@@ -100,16 +106,21 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  padding-bottom: 1.5rem; /* Space for time-since */
 }
 
 .status-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   display: inline-block;
-  padding: 0.375rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: white;
-  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
 }
 
 .status-on-track .status-badge {
@@ -137,4 +148,5 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  padding-right: 1rem; /* Prevent overlap with positioned elements */
 }
