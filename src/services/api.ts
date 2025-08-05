@@ -2,7 +2,7 @@ import type { DepartmentData } from '../types';
 import { mockApi } from './mockApi';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://func-erp-dashboard.azurewebsites.net/api';
-const USE_MOCK_API = import.meta.env.VITE_USE_MOCK_API === 'true' || (import.meta.env.DEV && !import.meta.env.VITE_USE_REAL_API);
+const USE_MOCK_API = import.meta.env.DEV && !import.meta.env.VITE_USE_REAL_API;
 
 export interface StatusResponse {
   success: boolean;
