@@ -1,0 +1,300 @@
+{
+  "departments": [
+    {
+      "id": "accounting",
+      "name": "Accounting",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "biz",
+      "name": "BIZ",
+      "status": "At Risk",
+      "lastUpdate": "2025-08-05T14:06:42.022Z",
+      "updateNote": "We've re-opened BIZ and are monitoring the app"
+    },
+    {
+      "id": "ecom",
+      "name": "Ecom",
+      "status": "On Track",
+      "lastUpdate": "2025-08-04T19:07:06.018Z",
+      "updateNote": "Ecom is currently queuing orders. Now through Monday, August 4, we are going to re-enable inventory 8/4."
+    },
+    {
+      "id": "customer_relations",
+      "name": "Customer Relations",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "credit",
+      "name": "Credit",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "export",
+      "name": "Export",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "it",
+      "name": "IT",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "product_management",
+      "name": "Product Management",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "sales_ops",
+      "name": "Sales Ops",
+      "status": "On Track",
+      "lastUpdate": "2025-08-04T17:14:42.475Z",
+      "updateNote": "For B2B order entry, pricing, and account management, please use Pronto. For account setup please use SFDC."
+    },
+    {
+      "id": "sc_forecasting",
+      "name": "SC: Forecasting",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "sc_sourcing",
+      "name": "SC: Sourcing",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "swb_pwb",
+      "name": "SWB/PWB",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "quality_control",
+      "name": "Quality Control",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "repair_assembly",
+      "name": "Repair Assembly",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "warehouse",
+      "name": "Warehouse",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "bag_assembly",
+      "name": "Bag Assembly",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "plastics",
+      "name": "Plastics",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "repair",
+      "name": "Repair",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "returns",
+      "name": "Returns",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "process_engineering",
+      "name": "Process Engineering",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "woods",
+      "name": "Woods",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "irons",
+      "name": "Irons",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "putters",
+      "name": "Putters",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "shipping",
+      "name": "Shipping",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    },
+    {
+      "id": "edi",
+      "name": "EDI",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T13:17:28.237Z",
+      "updateNote": "No Update."
+    }
+  ],
+  "cells": [
+    {
+      "id": "inventory_bulk_kitting",
+      "name": "Inventory / Bulk Kitting",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "kit_head",
+      "name": "Kit Head",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "kit_shaft",
+      "name": "Kit Shaft",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "serialization",
+      "name": "Serialization",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "epoxy",
+      "name": "Epoxy",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "cut_saw",
+      "name": "Cut Saw",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "taping_gripping",
+      "name": "Taping/Gripping",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "swing_weight",
+      "name": "Swing Weight",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "hot_melt",
+      "name": "Hot Melt",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "weight_install",
+      "name": "Weight Install",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "quality",
+      "name": "Quality",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "eop",
+      "name": "EOP",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "put_away",
+      "name": "Put Away",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "consolidation",
+      "name": "Consolidation",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "distro_center_anser",
+      "name": "Distro. Center - ANSER",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "distro_center_north",
+      "name": "Distro. Center - NORTH",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    },
+    {
+      "id": "bags",
+      "name": "Bags",
+      "status": "On Track",
+      "lastUpdate": "2025-08-05T14:39:53.325Z",
+      "updateNote": "No update."
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+.status-card {
+  background: var(--card-background);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.status-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transition: height 0.3s ease;
+}
+
+.status-card:hover::before {
+  height: 6px;
+}
+
+.status-on-track {
+  border-top: 4px solid var(--status-on-track);
+}
+
+.status-on-track::before {
+  background-color: var(--status-on-track);
+}
+
+.status-at-risk {
+  border-top: 4px solid var(--status-at-risk);
+}
+
+.status-at-risk::before {
+  background-color: var(--status-at-risk);
+}
+
+.status-delayed {
+  border-top: 4px solid var(--status-delayed);
+}
+
+.status-delayed::before {
+  background-color: var(--status-delayed);
+}
+
+.status-emergency {
+  border-top: 4px solid var(--status-emergency);
+  animation: emergency-pulse 2s ease-in-out infinite;
+}
+
+.status-emergency::before {
+  background-color: var(--status-emergency);
+}
+
+@keyframes emergency-pulse {
+  0%, 100% { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+  50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+}
+
+.card-header {
+  margin-bottom: 1rem;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  padding-right: 5rem; /* Space for status badge */
+}
+
+.time-since {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 1rem;
+  font-size: 0.7rem;
+  color: var(--text-color-muted);
+  white-space: nowrap;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.status-card:hover .time-since {
+  opacity: 0.8;
+}
+
+.time-since.overdue {
+  color: var(--status-delayed);
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 1.5rem; /* Space for time-since */
+}
+
+.status-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.status-on-track .status-badge {
+  background-color: var(--status-on-track);
+}
+
+.status-at-risk .status-badge {
+  background-color: var(--status-at-risk);
+}
+
+.status-delayed .status-badge {
+  background-color: var(--status-delayed);
+}
+
+.status-emergency .status-badge {
+  background-color: var(--status-emergency);
+}
+
+.update-note {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-color);
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  padding-right: 1rem; /* Prevent overlap with positioned elements */
+}
