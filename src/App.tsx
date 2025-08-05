@@ -33,6 +33,7 @@ function App() {
   const [showHistory, setShowHistory] = useState(false)
   const [showAddModal, setShowAddModal] = useState(false)
   const [isRotationPaused, setIsRotationPaused] = useState(false)
+  const [timeUntilRotation, setTimeUntilRotation] = useState(DASHBOARD_CYCLE_INTERVAL / 1000)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const transformData = (data: any[], type: 'department' | 'cell'): ExtendedDepartmentData[] => {
@@ -114,15 +115,25 @@ function App() {
     }
   }, [])
 
-  // Dashboard cycling effect
+  // Dashboard cycling effect with countdown
   useEffect(() => {
     if (!isRotationPaused) {
-      const cycleInterval = setInterval(() => {
-        setCurrentDashboard(prev => prev === 'department' ? 'cell' : 'department')
-      }, DASHBOARD_CYCLE_INTERVAL)
-      return () => clearInterval(cycleInterval)
+      setTimeUntilRotation(DASHBOARD_CYCLE_INTERVAL / 1000)
+      
+      // Countdown timer
+      const countdownInterval = setInterval(() => {
+        setTimeUntilRotation(prev => {
+          if (prev <= 1) {
+            setCurrentDashboard(current => current === 'department' ? 'cell' : 'department')
+            return DASHBOARD_CYCLE_INTERVAL / 1000
+          }
+          return prev - 1
+        })
+      }, 1000)
+      
+      return () => clearInterval(countdownInterval)
     }
-  }, [isRotationPaused])
+  }, [isRotationPaused, currentDashboard])
 
   // Theme effect
   useEffect(() => {
@@ -132,6 +143,11 @@ function App() {
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark')
+  }
+
+  const handleNextDashboard = () => {
+    setCurrentDashboard(prev => prev === 'department' ? 'cell' : 'department')
+    setTimeUntilRotation(DASHBOARD_CYCLE_INTERVAL / 1000)
   }
 
   // Calculate optimal card height based on viewport
@@ -232,14 +248,29 @@ function App() {
         </label>
         <h1 className="dashboard-title">{dashboardTitle}</h1>
         <div className="header-actions">
-          <button
-            className="rotation-toggle"
-            onClick={() => setIsRotationPaused(!isRotationPaused)}
-            title={isRotationPaused ? 'Resume rotation' : 'Pause rotation'}
-            aria-label={isRotationPaused ? 'Resume rotation' : 'Pause rotation'}
-          >
-            {isRotationPaused ? '▶' : '❚❚'}
-          </button>
+          <div className="rotation-controls">
+            {!isRotationPaused && (
+              <span className="countdown">
+                Next in {timeUntilRotation}s
+              </span>
+            )}
+            <button
+              className="rotation-toggle"
+              onClick={() => setIsRotationPaused(!isRotationPaused)}
+              title={isRotationPaused ? 'Resume rotation' : 'Pause rotation'}
+              aria-label={isRotationPaused ? 'Resume rotation' : 'Pause rotation'}
+            >
+              {isRotationPaused ? '▶' : '❚❚'}
+            </button>
+            <button
+              className="next-button"
+              onClick={handleNextDashboard}
+              title="Next dashboard"
+              aria-label="Next dashboard"
+            >
+              Next →
+            </button>
+          </div>
           <button 
             className="add-button"
             onClick={() => setShowAddModal(true)}
